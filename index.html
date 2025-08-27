@@ -183,75 +183,73 @@
     <section id="register" class="hidden">
       <div>
         <div>
+          <i class="fas fa-user-plus"></i>
+          <h2>Join EnglishMaster</h2>
+          <p>Start your English learning journey today</p>
+        </div>
+        <form onsubmit="completeRegistration(event)">
           <div>
-            <i class="fas fa-user-plus"></i>
-            <h2>Join EnglishMaster</h2>
-            <p>Start your English learning journey today</p>
+            <label>Full Name</label>
+            <input type="text" required placeholder="Enter your full name" />
           </div>
-          <form onsubmit="completeRegistration(event)">
-            <div>
-              <label>Full Name</label>
-              <input type="text" required placeholder="Enter your full name" />
-            </div>
-            <div>
-              <label>Email Address</label>
-              <input type="email" required placeholder="Enter your email" />
-            </div>
-            <div>
-              <label>Current English Level</label>
-              <select>
-                <option>Beginner (A1) - Just starting</option>
-                <option>Elementary (A2) - Basic phrases</option>
-                <option>Intermediate (B1) - Simple conversations</option>
-                <option>Upper-Intermediate (B2) - Fluent discussions</option>
-                <option>Advanced (C1) - Complex topics</option>
-                <option>Proficient (C2) - Native-like</option>
-              </select>
-            </div>
-            <div>
-              <label>Learning Goals (Select all that apply)</label>
-              <div>
-                <label>
-                  <input type="checkbox" />
-                  <div>
-                    <i class="fas fa-briefcase"></i>
-                    <span>Business English</span>
-                  </div>
-                </label>
-                <label>
-                  <input type="checkbox" />
-                  <div>
-                    <i class="fas fa-graduation-cap"></i>
-                    <span>Academic English</span>
-                  </div>
-                </label>
-                <label>
-                  <input type="checkbox" />
-                  <div>
-                    <i class="fas fa-comments"></i>
-                    <span>Conversation Skills</span>
-                  </div>
-                </label>
-                <label>
-                  <input type="checkbox" />
-                  <div>
-                    <i class="fas fa-microphone"></i>
-                    <span>British Accent Training</span>
-                  </div>
-                </label>
-              </div>
-            </div>
-            <button type="submit">
-              <span id="register-btn-text">Create Account</span>
-              <div id="register-loading" class="hidden"></div>
-            </button>
-          </form>
           <div>
-            <p>
-              Already have an account?
-              <a href="#">Sign in</a>
-            </p>
+            <label>Email Address</label>
+            <input type="email" required placeholder="Enter your email" />
           </div>
+          <div>
+            <label>Current English Level</label>
+            <select>
+              <option>Beginner (A1) - Just starting</option>
+              <option>Elementary (A2) - Basic phrases</option>
+              <option>Intermediate (B1) - Simple conversations</option>
+              <option>Upper-Intermediate (B2) - Fluent discussions</option>
+              <option>Advanced (C1) - Complex topics</option>
+              <option>Proficient (C2) - Native-like</option>
+            </select>
+          </div>
+          <div>
+            <label>Learning Goals (Select all that apply)</label>
+            <div>
+              <label>
+                <input type="checkbox" />
+                <div>
+                  <i class="fas fa-briefcase"></i>
+                  <span>Business English</span>
+                </div>
+              </label>
+              <label>
+                <input type="checkbox" />
+                <div>
+                  <i class="fas fa-graduation-cap"></i>
+                  <span>Academic English</span>
+                </div>
+              </label>
+              <label>
+                <input type="checkbox" />
+                <div>
+                  <i class="fas fa-comments"></i>
+                  <span>Conversation Skills</span>
+                </div>
+              </label>
+              <label>
+                <input type="checkbox" />
+                <div>
+                  <i class="fas fa-microphone"></i>
+                  <span>British Accent Training</span>
+                </div>
+              </label>
+            </div>
+          </div>
+          <button type="submit">
+            <span id="register-btn-text">Create Account</span>
+            <div id="register-loading" class="hidden"></div>
+          </button>
+        </form>
+        <div>
+          <p>
+            Already have an account?
+            <a href="#">Sign in</a>
+          </p>
         </div>
       </div>
     </section>
