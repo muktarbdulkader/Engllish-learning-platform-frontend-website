@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EnglishMaster Academy - Master English Like Never Before</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Scroll Progress Indicator -->
+    <div id="scrollIndicator"></div>
+
+    <!-- Notification System -->
+    <div id="notification">
+      <div>
+        <i id="notificationIcon" class="fas fa-check-circle"></i>
+        <p id="notificationText"></p>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+      <i class="fas fa-graduation-cap"></i>
+      <div>
+        <h1>EnglishMaster</h1>
+
+        <p>Academy</p>
+      </div>
+
+      <!-- Navigation Menu -->
+      <div id="menu">
+        <button class="menu-item" onclick="showSection('dashboard')">
+          Dashboard
+        </button>
+        <button class="menu-item" onclick="showSection('courses')">
+          Courses
+        </button>
+        <button class="menu-item" onclick="showSection('dictionary')">
+          Dictionary
+        </button>
+        <button class="menu-item" onclick="showSection('live-classes')">
+          Live Classes
+        </button>
+        <button class="menu-item" onclick="showSection('quiz')">Quiz</button>
+        <button class="menu-item" onclick="showSection('payment')">
+          <i class="fas fa-crown"></i> Go Premium
+        </button>
+        <button class="menu-item" onclick="showSection('register')">
+          Sign Up Free
+        </button>
+
+        <i class="fas fa-user"></i>
+        <div><span>3</span></div>
+      </div>
+
+      <div>
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+      <div id="overlay"></div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+      <div>
+        <div>
+          <span>Join 2M+ learners worldwide</span>
+          <h1>Master English Like <span>Never Before</span></h1>
+          <p>
+            Learn with AI-powered lessons, live classes with native speakers,
+            and interactive tools designed by language experts
+          </p>
+          <div>
+            <button onclick="showSection('register')">
+              <i class="fas fa-rocket"></i>Start Learning Free
+            </button>
+            <button onclick="showSection('courses')">
+              <i class="fas fa-play"></i>Explore Courses
+            </button>
+          </div>
+          <!-- Stats Section -->
+          <div>
+            <div>
+              <div class="stats-counter" data-target="2000000">0</div>
+              <div>Active Learners</div>
+            </div>
+            <div>
+              <div class="stats-counter" data-target="150">0</div>
+              <div>Expert Teachers</div>
+            </div>
+            <div>
+              <div class="stats-counter" data-target="500">0</div>
+              <div>Courses Available</div>
+            </div>
+            <div>
+              <div>4.9★</div>
+              <div>Average Rating</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Overview -->
+    <section id="features-overview">
+      <div>
+        <div>
+          <h2>Why Choose EnglishMaster?</h2>
+          <p>
+            Experience the most comprehensive English learning platform with
+            cutting-edge technology and expert instruction
+          </p>
+        </div>
+        <div>
+          <div>
+            <div>
+              <i class="fas fa-brain"></i>
+            </div>
+            <h3>AI-Powered Learning</h3>
+            <p>
+              Personalized lessons that adapt to your learning style and pace
+              with advanced AI technology
+            </p>
+          </div>
+          <div>
+            <div>
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>Native Speakers</h3>
+            <p>
+              Learn from certified native English speakers from UK, US, Canada,
+              and Australia
+            </p>
+          </div>
+          <div>
+            <div>
+              <i class="fas fa-certificate"></i>
+            </div>
+            <h3>Certified Courses</h3>
+            <p>
+              Earn internationally recognized certificates upon course
+              completion
+            </p>
+          </div>
+          <div>
+            <div>
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h3>Mobile Learning</h3>
+            <p>
+              Learn anywhere, anytime with our mobile app and offline content
+            </p>
+          </div>
+          <div>
+            <div>
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>Progress Tracking</h3>
+            <p>
+              Detailed analytics and progress reports to track your improvement
+            </p>
+          </div>
+          <div>
+            <div>
+              <i class="fas fa-headset"></i>
+            </div>
+            <h3>24/7 Support</h3>
+            <p>
+              Get help whenever you need it with our round-the-clock support
+              team
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Registration Section -->
+    <section id="register" class="hidden">
+      <div>
+        <div>
+          <div>
+            <i class="fas fa-user-plus"></i>
+            <h2>Join EnglishMaster</h2>
+            <p>Start your English learning journey today</p>
+          </div>
+          <form onsubmit="completeRegistration(event)">
+            <div>
+              <label>Full Name</label>
+              <input type="text" required placeholder="Enter your full name" />
+            </div>
+            <div>
+              <label>Email Address</label>
+              <input type="email" required placeholder="Enter your email" />
+            </div>
+            <div>
+              <label>Current English Level</label>
+              <select>
+                <option>Beginner (A1) - Just starting</option>
+                <option>Elementary (A2) - Basic phrases</option>
+                <option>Intermediate (B1) - Simple conversations</option>
+                <option>Upper-Intermediate (B2) - Fluent discussions</option>
+                <option>Advanced (C1) - Complex topics</option>
+                <option>Proficient (C2) - Native-like</option>
+              </select>
+            </div>
+            <div>
+              <label>Learning Goals (Select all that apply)</label>
+              <div>
+                <label>
+                  <input type="checkbox" />
+                  <div>
+                    <i class="fas fa-briefcase"></i>
+                    <span>Business English</span>
+                  </div>
+                </label>
+                <label>
+                  <input type="checkbox" />
+                  <div>
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Academic English</span>
+                  </div>
+                </label>
+                <label>
+                  <input type="checkbox" />
+                  <div>
+                    <i class="fas fa-comments"></i>
+                    <span>Conversation Skills</span>
+                  </div>
+                </label>
+                <label>
+                  <input type="checkbox" />
+                  <div>
+                    <i class="fas fa-microphone"></i>
+                    <span>British Accent Training</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <button type="submit">
+              <span id="register-btn-text">Create Account</span>
+              <div id="register-loading" class="hidden"></div>
+            </button>
+          </form>
+          <div>
+            <p>
+              Already have an account?
+              <a href="#">Sign in</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="hidden">
+      <div>
+        <div>
+          <div>
+            <h2>Welcome back, amin abdulkader</h2>
+            <p>Ready to continue your English learning journey?</p>
+          </div>
+          <div>
+            <div>Current Streak</div>
+            <div>15 Days</div>
+          </div>
+        </div>
+        <!-- Progress Overview -->
+        <div>
+          <div>
+            <div>
+              <i class="fas fa-fire"></i>
+              <span class="stats-counter" data-target="15">0</span>
+            </div>
+            <h3>Day Streak</h3>
+            <p>Keep it up!</p>
+            <div>
+              <div style="width: 75%"></div>
+            </div>
+          </div>
+          <div>
+            <div>
+              <i class="fas fa-trophy"></i>
+              <span class="stats-counter" data-target="1250">0</span>
+            </div>
+            <h3>XP Points</h3>
+            <p>This week</p>
+            <div>
+              <div style="width: 85%"></div>
+            </div>
+          </div>
+          <div>
+            <div>
+              <i class="fas fa-book"></i>
+              <span>8/12</span>
+            </div>
+            <h3>Lessons</h3>
+            <p>Completed</p>
+            <div>
+              <div style="width: 67%"></div>
+            </div>
+          </div>
+          <div>
+            <div>
+              <i class="fas fa-clock"></i>
+              <span>45m</span>
+            </div>
+            <h3>Study Time</h3>
+            <p>Today</p>
+            <div>
+              <div style="width: 60%"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Current Progress -->
+        <div>
+          <div>
+            <h3>Current Progress</h3>
+            <div>
+              <div>
+                <div>
+                  <i class="fas fa-briefcase"></i>
+                  <span>Business English Course</span>
+                </div>
+                <span>75%</span>
+              </div>
+              <div>
+                <div style="width: 75%"></div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <div>
+                  <i class="fas fa-microphone"></i>
+                  <span>British Accent Training</span>
+                </div>
+                <span>45%</span>
+              </div>
+              <div>
+                <div style="width: 45%"></div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <div>
+                  <i class="fas fa-spell-check"></i>
+                  <span>Grammar Fundamentals</span>
+                </div>
+                <span>90%</span>
+              </div>
+              <div>
+                <div style="width: 90%"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Achievement Section -->
+          <div>
+            <h3>Recent Achievements</h3>
+            <div>
+              <div>
+                <div>
+                  <i class="fas fa-medal"></i>
+                </div>
+                <div>
+                  <h4>Grammar Master</h4>
+                  <p>Completed 50 grammar exercises</p>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <i class="fas fa-star"></i>
+                </div>
+                <div>
+                  <h4>Vocabulary Builder</h4>
+                  <p>Learned 100 new words</p>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <i class="fas fa-fire"></i>
+                </div>
+                <div>
+                  <h4>Streak Champion</h4>
+                  <p>15-day learning streak</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Quick Actions -->
+        <div>
+          <button onclick="showSection('courses')">
+            <i class="fas fa-play"></i>
+            <h3>Continue Learning</h3>
+            <p>Resume your current lesson</p>
+            <div>
+              <span>Next: Business Presentations</span>
+              <i class="fas fa-arrow-right"></i>
+            </div>
+          </button>
+          <button onclick="showSection('quiz')">
+            <i class="fas fa-brain"></i>
+            <h3>Take a Quiz</h3>
+            <p>Test your knowledge</p>
+            <div>
+              <span>Grammar Challenge Ready</span>
+              <i class="fas fa-arrow-right"></i>
+            </div>
+          </button>
+          <button onclick="showSection('live-classes')">
+            <i class="fas fa-video"></i>
+            <h3>Join Live Class</h3>
+            <p>Next class in 2 hours</p>
+            <div>
+              <span>Business English with Sarah</span>
+              <i class="fas fa-arrow-right"></i>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses" class="hidden">
+      <div>
+        <div>
+          <h2>Explore Our Courses</h2>
+          <p>
+            Choose from hundreds of expertly designed courses created by
+            language professionals and native speakers
+          </p>
+        </div>
+        <!-- Search and Filters -->
+        <div>
+          <div>
+            <div>
+              <i class="fas fa-search"></i>
+              <input
+                type="text"
+                placeholder="Search courses, topics, or skills..."
+              />
+            </div>
+            <select>
+              <option>All Levels</option>
+              <option>Beginner (A1-A2)</option>
+              <option>Intermediate (B1-B2)</option>
+              <option>Advanced (C1-C2)</option>
+            </select>
+            <select>
+              <option>All Categories</option>
+              <option>Grammar & Writing</option>
+              <option>Speaking & Pronunciation</option>
+              <option>Business English</option>
+              <option>Test Preparation</option>
+            </select>
+          </div>
+        </div>
+        <!-- Course Categories -->
+        <div>
+          <button>
+            <div>
+              <i class="fas fa-comments"></i>
+            </div>
+            <h3>Speaking</h3>
+            <p>45 courses</p>
+          </button>
+          <button>
+            <div>
+              <i class="fas fa-headphones"></i>
+            </div>
+            <h3>Listening</h3>
+            <p>38 courses</p>
+          </button>
+          <button>
+            <div>
+              <i class="fas fa-pen"></i>
+            </div>
+            <h3>Writing</h3>
+            <p>32 courses</p>
+          </button>
+          <button>
+            <div>
+              <i class="fas fa-book-open"></i>
+            </div>
+            <h3>Grammar</h3>
+            <p>28 courses</p>
+          </button>
+        </div>
+        <!-- Featured Courses -->
+        <div>
+          <div>
+            <div>
+              <i class="fas fa-microphone"></i>
+            </div>
+            <div>
+              <div>
+                <span>SPEAKING</span>
+                <div>
+                  <div>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                  <span>4.9 (234)</span>
+                </div>
+              </div>
+              <h3>British Accent Mastery</h3>
+              <p>
+                Master the British accent with native speakers and AI
+                pronunciation feedback. Perfect your RP accent in 8 weeks.
+              </p>
+              <div>
+                <div>
+                  <i class="fas fa-clock"></i>
+                  <span>12 hours</span>
+                  <i class="fas fa-users"></i>
+                  <span>2,340 students</span>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <span>$49</span>
+                  <span>$99</span>
+                </div>
+                <button>Enroll Now</button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div>
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <div>
+              <div>
+                <span>BUSINESS</span>
+                <div>
+                  <div>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                  <span>4.8 (189)</span>
+                </div>
+              </div>
+              <h3>Business English Pro</h3>
+              <p>
+                Professional English for meetings, presentations, and
+                negotiations. Advance your career with confidence.
+              </p>
+              <div>
+                <div>
+                  <i class="fas fa-clock"></i>
+                  <span>16 hours</span>
+                  <i class="fas fa-users"></i>
+                  <span>1,890 students</span>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <span>$79</span>
+                  <span>$149</span>
+                </div>
+                <button>Enroll Now</button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div>
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div>
+              <div>
+                <span>ACADEMIC</span>
+                <div>
+                  <div>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                  <span>4.7 (312)</span>
+                </div>
+              </div>
+              <h3>IELTS Preparation</h3>
+              <p>
+                Complete IELTS preparation with practice tests and expert
+                guidance. Achieve your target band score.
+              </p>
+              <div>
+                <div>
+                  <i class="fas fa-clock"></i>
+                  <span>20 hours</span>
+                  <i class="fas fa-users"></i>
+                  <span>3,120 students</span>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <span>$99</span>
+                  <span>$199</span>
+                </div>
+                <button>Enroll Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dictionary Section -->
+    <section id="dictionary" class="hidden">
+      <div>
+        <div>
+          <h2>Interactive Dictionary</h2>
+          <p>
+            Look up words, hear pronunciations, and see examples with our
+            AI-powered dictionary
+          </p>
+        </div>
+        <!-- Dictionary Search -->
+        <div>
+          <div>
+            <div>
+              <i class="fas fa-search"></i>
+              <input
+                id="dictionary-input"
+                type="text"
+                placeholder="Search for any word..."
+              />
+            </div>
+            <button onclick="searchWord()">
+              <i class="fas fa-search"></i>Search
+            </button>
+          </div>
+          <!-- Word Result -->
+          <div id="word-result" class="hidden">
+            <div>
+              <div>
+                <h3 id="word-title"></h3>
+                <button onclick="playPronunciation()">
+                  <i class="fas fa-volume-up"></i>Play Audio
+                </button>
+              </div>
+              <div>
+                <span id="word-phonetic"></span>
+              </div>
+              <div>
+                <div>
+                  <div>
+                    <h4><i class="fas fa-book-open"></i>Definition</h4>
+                    <p id="word-definition"></p>
+                  </div>
+                  <div>
+                    <h4><i class="fas fa-quote-left"></i>Example</h4>
+                    <p id="word-example"></p>
+                  </div>
+                </div>
+                <div>
+                  <h4><i class="fas fa-tags"></i>Synonyms</h4>
+                  <div id="word-synonyms"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Popular Words -->
+        <div>
+          <h3>Popular Words Today</h3>
+          <div>
+            <button onclick="searchSpecificWord('serendipity')">
+              <div>
+                <i class="fas fa-star"></i>
+                <h4>Serendipity</h4>
+              </div>
+              <p>Pleasant surprise</p>
+            </button>
+            <button onclick="searchSpecificWord('eloquent')">
+              <div>
+                <i class="fas fa-microphone"></i>
+                <h4>Eloquent</h4>
+              </div>
+              <p>Fluent speaking</p>
+            </button>
+            <button onclick="searchSpecificWord('ubiquitous')">
+              <div>
+                <i class="fas fa-globe"></i>
+                <h4>Ubiquitous</h4>
+              </div>
+              <p>Present everywhere</p>
+            </button>
+            <button onclick="searchSpecificWord('ephemeral')">
+              <div>
+                <i class="fas fa-clock"></i>
+                <h4>Ephemeral</h4>
+              </div>
+              <p>Lasting briefly</p>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Classes Section -->
+    <section id="live-classes" class="hidden">
+      <div>
+        <div>
+          <h2>Live Classes</h2>
+          <p>Learn with expert teachers in real-time interactive sessions</p>
+        </div>
+        <!-- Upcoming Classes -->
+        <div>
+          <h3><i class="fas fa-calendar-alt"></i>Upcoming Classes</h3>
+          <div>
+            <div>
+              <div>
+                <div>
+                  <i class="fas fa-video"></i>
+                </div>
+                <div>
+                  <h4>Business English Conversation</h4>
+                  <p>with Sarah Johnson • Intermediate Level</p>
+                  <div>
+                    <i class="fas fa-clock"></i>
+                    <span>Today at 3:00 PM GMT</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div>12/20 spots filled</div>
+                <button>Join Class</button>
+              </div>
+            </div>
+            <div>
+              <div>
+                <div>
+                  <i class="fas fa-microphone"></i>
+                </div>
+                <div>
+                  <h4>British Pronunciation Workshop</h4>
+                  <p>with James Mitchell • All Levels</p>
+                  <div>
+                    <i class="fas fa-clock"></i>
+                    <span>Tomorrow at 10:00 AM GMT</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div>8/15 spots filled</div>
+                <button>Reserve Spot</button>
+              </div>
+            </div>
+            <div>
+              <div>
+                <div>
+                  <i class="fas fa-pen"></i>
+                </div>
+                <div>
+                  <h4>IELTS Writing Masterclass</h4>
+                  <p>with Emma Thompson • Advanced Level</p>
+                  <div>
+                    <i class="fas fa-clock"></i>
+                    <span>Friday at 2:00 PM GMT</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div>15/20 spots filled</div>
+                <button>Reserve Spot</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Teachers -->
+        <div>
+          <h3>Meet Our Expert Teachers</h3>
+          <div>
+            <div>
+              <div>
+                <div>
+                  <i class="fas fa-user"></i>
+                </div>
+                <div>
+                  <i class="fas fa-check"></i>
+                </div>
+              </div>
+              <h3>Sarah Johnson</h3>
+              <p>Business English Expert</p>
+              <div>
+                <div>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <span>4.9 (234 reviews)</span>
+              </div>
+              <p>
+                10+ years experience teaching business professionals. MBA from
+                Oxford University.
+              </p>
+              <button>View Profile</button>
+            </div>
+            <div>
+              <div>
+                <div>
+                  <i class="fas fa-user"></i>
+                </div>
+                <div>
+                  <i class="fas fa-check"></i>
+                </div>
+              </div>
+              <h3>James Mitchell</h3>
+              <p>Pronunciation Specialist</p>
+              <div>
+                <div>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <span>4.8 (189 reviews)</span>
+              </div>
+              <p>
+                Native British speaker from London. Certified accent coach with
+                8 years experience.
+              </p>
+              <button>View Profile</button>
+            </div>
+            <div>
+              <div>
+                <div>
+                  <i class="fas fa-user"></i>
+                </div>
+                <div>
+                  <i class="fas fa-check"></i>
+                </div>
+              </div>
+              <h3>Emma Thompson</h3>
+              <p>IELTS Preparation Expert</p>
+              <div>
+                <div>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <span>4.9 (312 reviews)</span>
+              </div>
+              <p>
+                IELTS examiner with 12 years experience. Helped 1000+ students
+                achieve band 7+.
+              </p>
+              <button>View Profile</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quiz Section -->
+    <section id="quiz" class="hidden">
+      <div>
+        <div>
+          <h2>English Quiz Challenge</h2>
+          <p>
+            Test your knowledge and track your progress with our adaptive quiz
+            system
+          </p>
+        </div>
+        <!-- Quiz Container -->
+        <div>
+          <div id="quiz-start">
+            <div>
+              <div>
+                <i class="fas fa-brain"></i>
+              </div>
+              <h3>Ready for a Challenge?</h3>
+              <p>
+                Test your English skills with our adaptive quiz system and get
+                instant feedback
+              </p>
+            </div>
+            <div>
+              <button onclick="startQuiz('grammar')">
+                <div>
+                  <i class="fas fa-spell-check"></i>
+                </div>
+                <h4>Grammar Quiz</h4>
+                <p>Test your grammar knowledge</p>
+                <div>15 questions • 10 minutes</div>
+              </button>
+              <button onclick="startQuiz('vocabulary')">
+                <div>
+                  <i class="fas fa-book"></i>
+                </div>
+                <h4>Vocabulary Quiz</h4>
+                <p>Expand your word knowledge</p>
+                <div>20 questions • 15 minutes</div>
+              </button>
+              <button onclick="startQuiz('mixed')">
+                <div>
+                  <i class="fas fa-random"></i>
+                </div>
+                <h4>Mixed Quiz</h4>
+                <p>Complete challenge</p>
+                <div>25 questions • 20 minutes</div>
+              </button>
+            </div>
+          </div>
+          <!-- Quiz Questions -->
+          <div id="quiz-questions" class="hidden">
+            <div>
+              <div>
+                <div>
+                  <span
+                    >Question <span id="current-question">1</span> of
+                    <span id="total-questions">15</span></span
+                  >
+                </div>
+              </div>
+              <div>
+                <i class="fas fa-clock"></i>
+                <span id="quiz-timer">02:30</span>
+              </div>
+            </div>
+            <div>
+              <h3 id="question-text"></h3>
+              <div id="quiz-options"></div>
+            </div>
+            <div>
+              <button id="prev-btn" onclick="previousQuestion()" disabled>
+                <i class="fas fa-arrow-left"></i>Previous
+              </button>
+              <button id="next-btn" onclick="nextQuestion()">
+                Next<i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+          <!-- Quiz Results -->
+          <div id="quiz-results" class="hidden">
+            <div>
+              <div>
+                <i class="fas fa-trophy"></i>
+              </div>
+              <h3>Quiz Complete!</h3>
+              <div id="final-score">85%</div>
+              <p>Great job! You're making excellent progress.</p>
+            </div>
+            <div>
+              <div>
+                <div id="correct-answers">12</div>
+                <div>Correct Answers</div>
+              </div>
+              <div>
+                <div id="incorrect-answers">3</div>
+                <div>Incorrect Answers</div>
+              </div>
+              <div>
+                <div id="time-taken">4:32</div>
+                <div>Time Taken</div>
+              </div>
+            </div>
+            <div>
+              <button onclick="restartQuiz()">
+                <i class="fas fa-redo"></i>Take Another Quiz
+              </button>
+              <button onclick="showSection('courses')">
+                <i class="fas fa-graduation-cap"></i>Continue Learning
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Payment Section -->
+    <section id="payment" class="hidden">
+      <div>
+        <div>
+          <h2>Choose Your Plan</h2>
+          <p>
+            Unlock premium features and accelerate your English learning journey
+          </p>
+        </div>
+        <!-- Pricing Plans -->
+        <div>
+          <!-- Basic Plan -->
+          <div>
+            <div>
+              <div>
+                <i class="fas fa-user"></i>
+              </div>
+              <h3>Basic</h3>
+              <div>Free</div>
+              <p>Perfect for getting started</p>
+            </div>
+            <ul>
+              <li>
+                <i class="fas fa-check"></i>
+                <span>5 lessons per day</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i>
+                <span>Basic dictionary access</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i>
+                <span>Progress tracking</span>
+              </li>
+              <li>
+                <i class="fas fa-times"></i>
+                <span>Live classes</span>
+              </li>
+              <li>
+                <i class="fas fa-times"></i>
+                <span>Offline access</span>
+              </li>
+            </ul>
+            <button>Current Plan</button>
+          </div>
+          <!-- Premium Plan -->
+          <div>
+            <div>
+              <span>Most Popular</span>
+              <div>
+                <i class="fas fa-crown"></i>
+              </div>
+              <h3>Premium</h3>
+              <div>$19<span>/month</span></div>
+              <p>Everything you need to excel</p>
+            </div>
+            <ul>
+              <li>
+                <i class="fas fa-check"></i>
+                <span>Unlimited lessons</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i>
+                <span>Full dictionary with audio</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i>
+                <span>Live classes (5 per month)</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i>
+                <span>Offline access</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i>
+                <span>AI pronunciation feedback</span>
+              </li>
+            </ul>
+            <button onclick="selectPlan('premium')">Choose Premium</button>
+          </div>
+          <!-- Pro Plan -->
+          <div>
+            <div>
+              <div>
+                <i class="fas fa-rocket"></i>
+              </div>
+              <h3>Pro</h3>
+              <div>$39<span>/month</span></div>
+              <p>For serious learners</p>
+            </div>
+            <ul>
+              <li>
+                <i class="fas fa-check"></i>
+                <span>Everything in Premium</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i>
+                <span>Unlimited live classes</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i>
+                <span>1-on-1 tutoring sessions</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i>
+                <span>Personalized study plan</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i>
+                <span>Certificate of completion</span>
+              </li>
+            </ul>
+            <button onclick="selectPlan('pro')">Choose Pro</button>
+          </div>
+        </div>
+        <!-- Payment Form -->
+        <!-- Payment Form -->
+        <div id="payment-form" class="hidden">
+          <h3>Complete Your Purchase</h3>
+          <div class="payment-container">
+            <div class="payment-method-section">
+              <h4>Payment Method</h4>
+              <div class="payment-options">
+                <label>
+                  <input
+                    type="radio"
+                    name="payment-method"
+                    value="card"
+                    checked
+                  />
+                  <i class="fas fa-credit-card"></i>
+                  <span>Credit/Debit Card</span>
+                </label>
+                <label>
+                  <input type="radio" name="payment-method" value="paypal" />
+                  <i class="fab fa-paypal"></i>
+                  <span>PayPal</span>
+                </label>
+                <label>
+                  <input type="radio" name="payment-method" value="apple" />
+                  <i class="fab fa-apple"></i>
+                  <span>Apple Pay</span>
+                </label>
+              </div>
+
+              <div class="card-details">
+                <div class="card-number">
+                  <label>Card Number</label>
+                  <input type="text" placeholder="1234 5678 9012 3456" />
+                </div>
+                <div class="expiry-cvv">
+                  <div>
+                    <label>Expiry Date</label>
+                    <input type="text" placeholder="MM/YY" />
+                  </div>
+                  <div>
+                    <label>CVV</label>
+                    <input type="text" placeholder="123" />
+                  </div>
+                </div>
+                <div class="cardholder-name">
+                  <label>Cardholder Name</label>
+                  <input type="text" placeholder="John Doe" />
+                </div>
+              </div>
+            </div>
+
+            <div class="order-summary-section">
+              <h4>Order Summary</h4>
+              <div class="order-summary-card">
+                <div class="plan-info">
+                  <span id="selected-plan">Premium Plan</span>
+                  <span id="plan-price">$19.00</span>
+                </div>
+                <div class="cost-breakdown">
+                  <div>
+                    <span>Subtotal</span><span id="subtotal">$19.00</span>
+                  </div>
+                  <div>
+                    <span>Tax (20%)</span><span id="tax-amount">$3.80</span>
+                  </div>
+                  <div>
+                    <span>Discount (50% off first month)</span
+                    ><span>-$9.50</span>
+                  </div>
+                </div>
+                <hr />
+                <div class="total">
+                  <span>Total</span>
+                  <span id="total-price">$13.30</span>
+                </div>
+                <button onclick="processPayment()">
+                  <i class="fas fa-lock"></i> Complete Purchase
+                </button>
+                <div class="secure-info">
+                  <p>
+                    <i class="fas fa-shield-alt"></i> Secure payment powered by
+                    Stripe
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div>
+        <div>
+          <div>
+            <i class="fas fa-graduation-cap"></i>
+            <div>
+              <h3>EnglishMaster</h3>
+              <p>Academy</p>
+            </div>
+          </div>
+          <p>
+            Transform your English skills with our comprehensive learning
+            platform. Join millions of learners worldwide and achieve fluency
+            faster than ever before.
+          </p>
+          <div>
+            <a href="#">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Our Teachers</a></li>
+            <li><a href="#">Success Stories</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Help Center</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li>
+              <i class="fas fa-envelope"></i>
+              support@englishmaster.com
+            </li>
+            <li>
+              <i class="fas fa-phone"></i>
+              +251 1666 2982
+            </li>
+            <li>
+              <i class="fas fa-map-marker-alt"></i>
+              dodola, Asasa,shashamena
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <p>© 2024 EnglishMaster Academy. All rights reserved.</p>
+          <div>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
