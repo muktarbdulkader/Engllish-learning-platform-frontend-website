@@ -1233,12 +1233,13 @@
                 "The interactive lessons are fun and effective. I enjoy learning
                 every day, and my English has improved more than I expected!"
               </p>
+              <span class=""></span>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <section class="slider">
+    <section class="slider" id="slider">
       <h2>english master</h2>
       <div class="slides">
         <div class="slide current">
@@ -1264,6 +1265,107 @@
       <!-- Dots -->
       <div class="dots"></div>
     </section>
+    <section id="about" class="about">
+      <h2>About EnglishMaster Academy</h2>
+      <p class="intro">
+        EnglishMaster Academy is a premier online platform dedicated to helping
+        learners worldwide achieve fluency in English. Whether you are a
+        beginner or an advanced learner, our interactive lessons, live classes,
+        and personalized learning plans will guide you every step of the way.
+      </p>
+      <p class="mission">
+        Our mission is simple: to make English learning accessible, engaging,
+        and effective for everyone, anytime, anywhere.
+      </p>
+
+      <div class="features">
+        <div class="feature">
+          <img src="img-4.jpg" alt="Experienced Teachers" />
+          <h3>Experienced Teachers</h3>
+          <p>
+            Learn from certified educators with years of teaching experience.
+          </p>
+        </div>
+        <div class="feature">
+          <img src="img-1.jpg" alt="Interactive Lessons" />
+          <h3>Interactive Lessons</h3>
+          <p>Engaging exercises, quizzes, and games designed for all levels.</p>
+        </div>
+        <div class="feature">
+          <img src="img-2.jpg" alt="Track Progress" />
+          <h3>Track Your Progress</h3>
+          <p>Monitor your improvements and achieve fluency efficiently.</p>
+        </div>
+        <div class="feature">
+          <img src="img-3.jpg" alt="Dedicated Support" />
+          <h3>Dedicated Support</h3>
+          <p>Get guidance and assistance from our friendly support team.</p>
+        </div>
+      </div>
+
+      <p class="cta">
+        <a href="#register" onclick="showSection('register')" class="btn"
+          >Join Now</a
+        >
+      </p>
+    </section>
+    <!-- Overlay for smooth background toggle effect -->
+    <div class="overlay hidden"></div>
+
+    <!-- Privacy Modal -->
+    <div id="privacyModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('privacyModal')">&times;</span>
+        <h2>Privacy Policy</h2>
+        <p>
+          At EnglishMaster Academy, your privacy is our top priority. We never
+          share your personal information with third parties. All your learning
+          data, progress, and account details are securely stored and used only
+          to enhance your learning experience.
+        </p>
+      </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="termsModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('termsModal')">&times;</span>
+        <h2>Terms and Conditions</h2>
+        <p>
+          By using EnglishMaster Academy, you agree to our terms and conditions.
+          The platform is provided as-is, and we reserve the right to update or
+          modify features, content, or policies to improve the learning
+          experience.
+        </p>
+      </div>
+    </div>
+
+    <!-- FAQ Modal -->
+    <div id="faqModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('faqModal')">&times;</span>
+        <h2>Frequently Asked Questions</h2>
+        <ul>
+          <li>
+            <strong>How do I register?</strong> Click "Join Now" and fill in
+            your details to create your account.
+          </li>
+          <li>
+            <strong>How can I join a live class?</strong> After registering,
+            navigate to "Live Classes" and click "Join" for the scheduled
+            session.
+          </li>
+          <li>
+            <strong>Can I track my progress?</strong> Yes! Your dashboard
+            displays your completed lessons, quizzes, and achievements.
+          </li>
+          <li>
+            <strong>Is my data secure?</strong> All user data is securely stored
+            and never shared with third parties.
+          </li>
+        </ul>
+      </div>
+    </div>
 
     <!-- Footer -->
     <footer>
@@ -1299,11 +1401,11 @@
         <div>
           <h4>Quick Links</h4>
           <ul>
-            <li><a href="#">About Us</a></li>
+            <li><a href="#about">About Us</a></li>
             <li><a href="#">Our Teachers</a></li>
             <li><a href="#">Success Stories</a></li>
             <li><a href="#">Blog</a></li>
-            <li><a href="#">Help Center</a></li>
+            <li><a href="javascript:void(0)" onclick="openModal('faqModal')" >Help Center</a></li>
           </ul>
         </div>
         <div>
@@ -1327,8 +1429,8 @@
         <div>
           <p>© 2024 EnglishMaster Academy. All rights reserved.</p>
           <div>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
+            <a href="javascript:void(0)" onclick="openModal('privacyModal')" ">Privacy Policy</a>
+            <a href="javascript:void(0)" onclick="openModal('termsModal')" >Terms of Service</a>
             <a href="#">Cookie Policy</a>
           </div>
         </div>

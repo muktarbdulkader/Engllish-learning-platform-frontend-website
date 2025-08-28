@@ -14,6 +14,8 @@ const sections = [
   "quiz",
   "payment",
   "register",
+  "success-stories",
+  "slider",
 ];
 
 /**
@@ -591,3 +593,24 @@ const slider = function () {
 };
 
 slider();
+function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  const overlay = document.querySelector(".overlay");
+  modal.classList.add("active");
+  overlay.classList.add("active");
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  const overlay = document.querySelector(".overlay");
+  modal.classList.remove("active");
+  overlay.classList.remove("active");
+}
+
+// Close modal by clicking overlay
+document.querySelector(".overlay").addEventListener("click", () => {
+  document
+    .querySelectorAll(".modal")
+    .forEach((modal) => modal.classList.remove("active"));
+  document.querySelector(".overlay").classList.remove("active");
+});
