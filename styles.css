@@ -600,6 +600,110 @@ nav button:hover {
   -webkit-text-fill-color: transparent;
   animation: fadeInDown 1s ease;
 }
+/* Sign-In Section */
+#signin {
+  max-width: 45rem;
+  margin: 4rem auto;
+  padding: 3rem;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1);
+}
+
+#signin h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #333;
+}
+
+#signin form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+#signin form label {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+#signin form input {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.3s;
+}
+
+#signin form input:focus {
+  border-color: #4e91f9;
+}
+
+#signin form button {
+  position: relative;
+  padding: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #4e91f9;
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#signin form button:hover {
+  background-color: #3b73d1;
+}
+
+/* Loading spinner inside button */
+#signin-loading {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid #fff;
+  border-top: 3px solid #3b73d1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: spin 1s linear infinite;
+}
+
+/* Show spinner when active */
+#signin-loading.active {
+  display: block;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Link below form */
+#signin p {
+  text-align: center;
+  margin-top: 1rem;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+#signin p a {
+  color: #4e91f9;
+  text-decoration: none;
+}
+
+#signin p a:hover {
+  text-decoration: underline;
+}
 
 /* Welcome Box */
 #dashboard > div > div:first-child {

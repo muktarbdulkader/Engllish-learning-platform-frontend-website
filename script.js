@@ -16,6 +16,8 @@ const sections = [
   "register",
   "success-stories",
   "slider",
+  "about",
+  "signin",
 ];
 
 /**
@@ -59,8 +61,12 @@ window.addEventListener("scroll", () => {
  */
 function completeRegistration(event) {
   event.preventDefault();
+  const form = event.target;
   const buttonText = document.getElementById("register-btn-text");
   const loadingSpinner = document.getElementById("register-loading");
+
+  // Get the full name from the input field
+  const fullName = form.querySelector('input[type="text"]').value;
 
   buttonText.classList.add("hidden");
   loadingSpinner.classList.remove("hidden");
@@ -69,8 +75,21 @@ function completeRegistration(event) {
     showNotification("Registration successful!", "check-circle", "green");
     buttonText.classList.remove("hidden");
     loadingSpinner.classList.add("hidden");
-    event.target.reset();
+    form.reset();
+
+    // Show dashboard section
+    showSection("dashboard");
+
+    // Update dashboard with user's name
+    updateDashboardName(fullName);
   }, 1500);
+}
+
+function updateDashboardName(name) {
+  const dashboardTitle = document.getElementById("dashboard-title");
+  if (dashboardTitle) {
+    dashboardTitle.textContent = `Welcome back, ${name}`;
+  }
 }
 
 /**
