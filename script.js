@@ -18,7 +18,6 @@ const sections = [
 
 /**
  * Shows a specific section and hides others
- * @param {string} sectionId - ID of the section to show
  */
 function showSection(sectionId) {
   sections.forEach((id) => {
@@ -50,12 +49,11 @@ window.addEventListener("scroll", () => {
   const scrollHeight =
     document.documentElement.scrollHeight - window.innerHeight;
   const scrollPercent = (window.scrollY / scrollHeight) * 100;
-  scrollIndicator.style.width = `${scrollPercent}%`;
+  if (scrollIndicator) scrollIndicator.style.width = `${scrollPercent}%`;
 });
 
 /**
  * Handles registration form submission
- * @param {Event} event - Form submission event
  */
 function completeRegistration(event) {
   event.preventDefault();
@@ -70,14 +68,11 @@ function completeRegistration(event) {
     buttonText.classList.remove("hidden");
     loadingSpinner.classList.add("hidden");
     event.target.reset();
-  }, 1500); // Reduced timeout for faster feedback on mobile
+  }, 1500);
 }
 
 /**
- * Displays a notification with message, icon, and color
- * @param {string} message - Notification message
- * @param {string} icon - Font Awesome icon name
- * @param {string} color - Icon color
+ * Displays a notification
  */
 function showNotification(message, icon, color) {
   const notification = document.getElementById("notification");
@@ -91,7 +86,7 @@ function showNotification(message, icon, color) {
   notification.style.display = "block";
   setTimeout(() => {
     notification.style.display = "none";
-  }, 2500); // Slightly shorter duration for mobile UX
+  }, 2500);
 }
 
 /**
@@ -103,7 +98,7 @@ function countUp() {
     const target = parseInt(counter.getAttribute("data-target")) || 0;
     let count = 0;
     const increment = target / 100;
-    const duration = window.innerWidth <= 480 ? 10 : 20; // Faster animation on mobile
+    const duration = window.innerWidth <= 480 ? 10 : 20;
 
     const updateCounter = () => {
       if (count < target) {
@@ -169,10 +164,9 @@ function searchWord() {
     wordExample.textContent = word.example;
     wordSynonyms.innerHTML = word.synonyms
       .map((syn) => `<span>${syn}</span>`)
-      .join(", ");
+      .join(" ");
     wordResult.classList.remove("hidden");
 
-    // Auto-scroll to result on mobile
     if (window.innerWidth <= 480) {
       wordResult.scrollIntoView({ behavior: "smooth", block: "center" });
     }
@@ -182,30 +176,22 @@ function searchWord() {
   }
 }
 
-/**
- * Searches for a specific word
- * @param {string} word - Word to search
- */
 function searchSpecificWord(word) {
   document.getElementById("dictionary-input").value = word;
   searchWord();
 }
 
-/**
- * Plays word pronunciation
- * @param {string} word - Word to pronounce
- */
 function playPronunciation(word) {
   if (word) {
     const utterance = new SpeechSynthesisUtterance(word);
-    utterance.rate = window.innerWidth <= 480 ? 0.9 : 1.0; // Slightly slower on mobile
+    utterance.rate = window.innerWidth <= 480 ? 0.9 : 1.0;
     speechSynthesis.speak(utterance);
   } else {
     showNotification("Please enter a word first!", "volume-up", "blue");
   }
 }
 
-// ---------------- QUIZ SYSTEM ----------------
+/// ---------------- QUIZ SYSTEM ----------------
 
 const quizData = {
   grammar: [
@@ -258,10 +244,6 @@ let selectedAnswers = {};
 let timerInterval;
 let quizStartTime;
 
-/**
- * Starts a quiz of the specified type
- * @param {string} type - Quiz type (grammar, vocabulary, mixed)
- */
 function startQuiz(type) {
   currentQuiz = quizData[type];
   if (!currentQuiz)
@@ -277,13 +259,10 @@ function startQuiz(type) {
   document.getElementById("quiz-results").classList.add("hidden");
   document.getElementById("total-questions").textContent = currentQuiz.length;
 
-  startTimer(window.innerWidth <= 480 ? 120 : 150); // Shorter timer on mobile
+  startTimer(window.innerWidth <= 480 ? 120 : 150);
   showQuestion();
 }
 
-/**
- * Displays the current quiz question
- */
 function showQuestion() {
   const question = currentQuiz[currentQuestionIndex];
   document.getElementById("current-question").textContent =
@@ -302,11 +281,12 @@ function showQuestion() {
     )
     .join("");
 
+  // Disable Previous button only on the first question
   document.getElementById("prev-btn").disabled = currentQuestionIndex === 0;
-  document.getElementById("next-btn").disabled =
-    !selectedAnswers[currentQuestionIndex];
 
-  // Auto-scroll to question on mobile
+  // Always enable Next button (validation happens in nextQuestion)
+  document.getElementById("next-btn").disabled = false;
+
   if (window.innerWidth <= 480) {
     document
       .getElementById("quiz-questions")
@@ -314,9 +294,6 @@ function showQuestion() {
   }
 }
 
-/**
- * Navigates to the previous question
- */
 function previousQuestion() {
   if (currentQuestionIndex > 0) {
     saveAnswer();
@@ -325,13 +302,9 @@ function previousQuestion() {
   }
 }
 
-/**
- * Navigates to the next question or shows results
- */
 function nextQuestion() {
-  const selectedOption = document.querySelector('input[name="answer"]:checked');
-  if (selectedOption) {
-    saveAnswer();
+  saveAnswer();
+  if (selectedAnswers[currentQuestionIndex] !== undefined) {
     currentQuestionIndex++;
     if (currentQuestionIndex < currentQuiz.length) {
       showQuestion();
@@ -344,9 +317,6 @@ function nextQuestion() {
   }
 }
 
-/**
- * Saves the selected answer
- */
 function saveAnswer() {
   const selectedOption = document.querySelector('input[name="answer"]:checked');
   if (selectedOption) {
@@ -354,10 +324,6 @@ function saveAnswer() {
   }
 }
 
-/**
- * Starts the quiz timer
- * @param {number} seconds - Timer duration
- */
 function startTimer(seconds) {
   let timeLeft = seconds;
   const timerElement = document.getElementById("quiz-timer");
@@ -378,9 +344,6 @@ function startTimer(seconds) {
   }, 1000);
 }
 
-/**
- * Calculates quiz results
- */
 function calculateResults() {
   correctAnswers = 0;
   currentQuiz.forEach((q, index) => {
@@ -389,9 +352,6 @@ function calculateResults() {
   showResults();
 }
 
-/**
- * Displays quiz results
- */
 function showResults() {
   document.getElementById("quiz-questions").classList.add("hidden");
   document.getElementById("quiz-results").classList.remove("hidden");
@@ -409,15 +369,12 @@ function showResults() {
     .toString()
     .padStart(2, "0")}`;
 
-  // Auto-scroll to results on mobile
   if (window.innerWidth <= 480) {
     document
       .getElementById("quiz-results")
       .scrollIntoView({ behavior: "smooth" });
   }
 }
-
-//  * Restarts the quiz
 
 function restartQuiz() {
   document.getElementById("quiz-results").classList.add("hidden");
@@ -426,14 +383,14 @@ function restartQuiz() {
 
 /**
  * Selects a payment plan
- * @param {string} plan - Plan type (basic, premium)
  */
 function selectPlan(plan) {
   document.getElementById("payment-form").classList.remove("hidden");
   document.getElementById("selected-plan").textContent =
     plan.charAt(0).toUpperCase() + plan.slice(1) + " Plan";
 
-  const price = plan === "premium" ? 19.0 : 39.0;
+  // ✅ Fix: Basic cheaper than Premium
+  const price = plan === "basic" ? 19.0 : 39.0;
   document.getElementById("plan-price").textContent = `$${price.toFixed(2)}`;
   document.getElementById("subtotal").textContent = `$${price.toFixed(2)}`;
 
@@ -443,15 +400,12 @@ function selectPlan(plan) {
   const total = (price + parseFloat(tax)).toFixed(2);
   document.getElementById("total-price").textContent = `$${total}`;
 
-  // Auto-scroll to payment form on mobile
   if (window.innerWidth <= 480) {
     document
       .getElementById("payment-form")
       .scrollIntoView({ behavior: "smooth" });
   }
 }
-
-//  * Processes payment
 
 function processPayment(event) {
   event.preventDefault();
@@ -460,8 +414,6 @@ function processPayment(event) {
     document.getElementById("payment-form").classList.add("hidden");
   }, 2500);
 }
-
-//  * Initializes the page
 
 function init() {
   countUp();
@@ -475,15 +427,14 @@ function init() {
     });
   }
 
-  // Add click event listeners for navigation
+  // ✅ Fix: replace all spaces in nav text
   document.querySelectorAll("nav p").forEach((link) => {
     link.addEventListener("click", () => {
-      const sectionId = link.textContent.toLowerCase().replace(" ", "-");
+      const sectionId = link.textContent.toLowerCase().replace(/\s+/g, "-");
       showSection(sectionId);
     });
   });
 
-  // Add keyboard accessibility for dictionary input
   document
     .getElementById("dictionary-input")
     ?.addEventListener("keypress", (e) => {
@@ -491,12 +442,12 @@ function init() {
     });
 }
 
-// Initialize on page load
 window.addEventListener("load", init);
+
 const menuToggle = document.querySelector("#menuToggle");
 const navMenu = document.querySelector("#menu");
 const overlay = document.querySelector("#overlay");
-const icon = menuToggle.querySelector("i"); // get the <i> inside button
+const icon = menuToggle.querySelector("i");
 
 // Toggle menu
 menuToggle.addEventListener("click", (e) => {
@@ -504,7 +455,6 @@ menuToggle.addEventListener("click", (e) => {
   navMenu.classList.toggle("active");
   overlay.classList.toggle("active");
 
-  // Swap icon: bars ↔ times (X)
   if (icon.classList.contains("fa-bars")) {
     icon.classList.remove("fa-bars");
     icon.classList.add("fa-times");
@@ -522,7 +472,7 @@ overlay.addEventListener("click", () => {
   icon.classList.add("fa-bars");
 });
 
-// Close menu when clicking outside of menu
+// Close menu when clicking outside
 document.addEventListener("click", (e) => {
   if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
     navMenu.classList.remove("active");
@@ -541,3 +491,103 @@ document.querySelectorAll(".menu-item").forEach((btn) => {
     icon.classList.add("fa-bars");
   });
 });
+///////////////////////////////////////
+const slider = function () {
+  const slides = document.querySelectorAll(".slide");
+  const btnLeft = document.querySelector(".slider__btn--left");
+  const btnRight = document.querySelector(".slider__btn--right");
+  const dotContainer = document.querySelector(".dots");
+
+  let curSlide = 0;
+  const maxSlide = slides.length;
+  let slideInterval;
+
+  // Create dots
+  const createDots = function () {
+    slides.forEach((_, i) => {
+      dotContainer.insertAdjacentHTML(
+        "beforeend",
+        `<button class="dots__dot" data-slide="${i}"></button>`
+      );
+    });
+  };
+
+  const activateDot = function (slide) {
+    document
+      .querySelectorAll(".dots__dot")
+      .forEach((dot) => dot.classList.remove("dots__dot--active"));
+    document
+      .querySelector(`.dots__dot[data-slide="${slide}"]`)
+      .classList.add("dots__dot--active");
+  };
+
+  const goToSlide = function (slide) {
+    slides.forEach((s, i) => {
+      s.style.transform = `translateX(${100 * (i - slide)}%)`;
+    });
+  };
+
+  // Next / Previous
+  const nextSlide = function () {
+    curSlide = curSlide === maxSlide - 1 ? 0 : curSlide + 1;
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
+  const prevSlide = function () {
+    curSlide = curSlide === 0 ? maxSlide - 1 : curSlide - 1;
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
+  // Auto slide timer
+  const startAutoSlide = function () {
+    slideInterval = setInterval(nextSlide, 4000); // 4 seconds
+  };
+
+  const resetAutoSlide = function () {
+    clearInterval(slideInterval);
+    startAutoSlide();
+  };
+
+  // Init
+  const init = function () {
+    goToSlide(0);
+    createDots();
+    activateDot(0);
+    startAutoSlide();
+  };
+  init();
+
+  // Event handlers
+  btnRight.addEventListener("click", () => {
+    nextSlide();
+    resetAutoSlide();
+  });
+  btnLeft.addEventListener("click", () => {
+    prevSlide();
+    resetAutoSlide();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowLeft") {
+      prevSlide();
+      resetAutoSlide();
+    }
+    if (e.key === "ArrowRight") {
+      nextSlide();
+      resetAutoSlide();
+    }
+  });
+
+  dotContainer.addEventListener("click", function (e) {
+    if (e.target.classList.contains("dots__dot")) {
+      curSlide = Number(e.target.dataset.slide);
+      goToSlide(curSlide);
+      activateDot(curSlide);
+      resetAutoSlide();
+    }
+  });
+};
+
+slider();
