@@ -633,3 +633,16 @@ document.querySelector(".overlay").addEventListener("click", () => {
     .forEach((modal) => modal.classList.remove("active"));
   document.querySelector(".overlay").classList.remove("active");
 });
+window.addEventListener("scroll", function () {
+  const scrollBtn = document.getElementById("scrollToTop");
+  if (window.scrollY > 200) {
+    scrollBtn.classList.add("show");
+  } else {
+    scrollBtn.classList.remove("show");
+  }
+});
+
+// Smooth scroll
+document.getElementById("scrollToTop").addEventListener("click", function () {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
