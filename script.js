@@ -1,9 +1,9 @@
 /**
- * EnglishMaster Academy JavaScript
- * Enhanced for mobile and desktop responsiveness
- * Handles section navigation, notifications, counters, dictionary, quiz, and payment
+ * EnglishMaster Academy - Full JS
+ * Handles navigation, sections, dashboard, registration, quiz, payment, slider, modals, scroll-to-top, dictionary
  */
 
+/* ---------------- SECTIONS ---------------- */
 const sections = [
   "hero",
   "features-overview",
@@ -20,52 +20,36 @@ const sections = [
   "signin",
 ];
 
-/**
- * Shows a specific section and hides others
- */
 function showSection(sectionId) {
   sections.forEach((id) => {
     const section = document.getElementById(id);
-    if (section) {
-      section.classList.toggle("hidden", id !== sectionId);
-    }
+    if (section) section.classList.toggle("hidden", id !== sectionId);
   });
-
-  // Scroll to top of section on mobile for better UX
   if (window.innerWidth <= 480) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 }
 
-/**
- * Updates navigation bar on scroll
- */
+/* ---------------- NAVIGATION & SCROLL ---------------- */
 window.addEventListener("scroll", () => {
   const nav = document.querySelector("nav");
-  if (window.scrollY > 50) {
-    nav.classList.add("scrolled");
-  } else {
-    nav.classList.remove("scrolled");
-  }
+  if (nav) nav.classList.toggle("scrolled", window.scrollY > 50);
 
-  // Update scroll progress indicator
   const scrollIndicator = document.getElementById("scrollIndicator");
-  const scrollHeight =
-    document.documentElement.scrollHeight - window.innerHeight;
-  const scrollPercent = (window.scrollY / scrollHeight) * 100;
-  if (scrollIndicator) scrollIndicator.style.width = `${scrollPercent}%`;
+  if (scrollIndicator) {
+    const scrollHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = (window.scrollY / scrollHeight) * 100;
+    scrollIndicator.style.width = `${scrollPercent}%`;
+  }
 });
 
-/**
- * Handles registration form submission
- */
+/* ---------------- REGISTRATION ---------------- */
 function completeRegistration(event) {
   event.preventDefault();
   const form = event.target;
   const buttonText = document.getElementById("register-btn-text");
   const loadingSpinner = document.getElementById("register-loading");
-
-  // Get the full name from the input field
   const fullName = form.querySelector('input[type="text"]').value;
 
   buttonText.classList.add("hidden");
@@ -76,43 +60,32 @@ function completeRegistration(event) {
     buttonText.classList.remove("hidden");
     loadingSpinner.classList.add("hidden");
     form.reset();
-
-    // Show dashboard section
     showSection("dashboard");
-
-    // Update dashboard with user's name
     updateDashboardName(fullName);
   }, 1500);
 }
 
 function updateDashboardName(name) {
   const dashboardTitle = document.getElementById("dashboard-title");
-  if (dashboardTitle) {
-    dashboardTitle.textContent = `Welcome back, ${name}`;
-  }
+  if (dashboardTitle) dashboardTitle.textContent = `Welcome back, ${name}`;
 }
 
-/**
- * Displays a notification
- */
+/* ---------------- NOTIFICATION ---------------- */
 function showNotification(message, icon, color) {
   const notification = document.getElementById("notification");
   const notificationText = document.getElementById("notificationText");
   const notificationIcon = document.getElementById("notificationIcon");
+  if (!notification || !notificationText || !notificationIcon) return;
 
   notificationText.textContent = message;
   notificationIcon.className = `fas fa-${icon}`;
   notificationIcon.style.color = color;
 
   notification.style.display = "block";
-  setTimeout(() => {
-    notification.style.display = "none";
-  }, 2500);
+  setTimeout(() => (notification.style.display = "none"), 2500);
 }
 
-/**
- * Animates stats counters
- */
+/* ---------------- STATS COUNTER ---------------- */
 function countUp() {
   const counters = document.querySelectorAll(".stats-counter");
   counters.forEach((counter) => {
@@ -134,86 +107,105 @@ function countUp() {
   });
 }
 
-/**
- * Searches for a word in the dictionary
- */
-function searchWord() {
-  const input = document
-    .getElementById("dictionary-input")
-    .value.trim()
-    .toLowerCase();
-  const wordResult = document.getElementById("word-result");
-  const wordTitle = document.getElementById("word-title");
-  const wordPhonetic = document.getElementById("word-phonetic");
-  const wordDefinition = document.getElementById("word-definition");
-  const wordExample = document.getElementById("word-example");
-  const wordSynonyms = document.getElementById("word-synonyms");
+const dictInput = document.getElementById("dictionary-input");
+const wordResult = document.getElementById("word-result");
+const wordTitle = document.getElementById("word-title");
+const wordPhonetic = document.getElementById("word-phonetic");
+const wordDefinition = document.getElementById("word-definition");
+const wordExample = document.getElementById("word-example");
+const wordSynonyms = document.getElementById("word-synonyms");
 
-  const dictionary = {
-    serendipity: {
-      phonetic: "/ˌserənˈdipədē/",
-      definition:
-        "The occurrence of finding something valuable when least expected.",
-      example: "Meeting her by chance at the café was pure serendipity.",
-      synonyms: ["fortune", "luck", "happy accident"],
-    },
-    eloquent: {
-      phonetic: "/ˈeləkwənt/",
-      definition: "Fluent or persuasive in speaking or writing.",
-      example: "Her eloquent speech captivated the audience.",
-      synonyms: ["articulate", "expressive", "fluent"],
-    },
-    ubiquitous: {
-      phonetic: "/yo͞oˈbikwədəs/",
-      definition: "Present, appearing, or found everywhere.",
-      example: "Smartphones are ubiquitous in modern society.",
-      synonyms: ["everywhere", "omnipresent", "widespread"],
-    },
-    ephemeral: {
-      phonetic: "/əˈfem(ə)rəl/",
-      definition: "Lasting for a very short time.",
-      example: "The beauty of the sunset was ephemeral, fading quickly.",
-      synonyms: ["transient", "fleeting", "short-lived"],
-    },
-  };
+let audioSrc = null;
 
-  if (dictionary[input]) {
-    const word = dictionary[input];
-    wordTitle.textContent = input.charAt(0).toUpperCase() + input.slice(1);
-    wordPhonetic.textContent = word.phonetic;
-    wordDefinition.textContent = word.definition;
-    wordExample.textContent = word.example;
-    wordSynonyms.innerHTML = word.synonyms
-      .map((syn) => `<span>${syn}</span>`)
-      .join(" ");
+// Trigger search on Enter key
+dictInput.addEventListener("keypress", function (e) {
+  if (e.key === "Enter") {
+    searchWord();
+  }
+});
+
+async function searchWord() {
+  const word = dictInput.value.trim();
+  if (!word) {
+    showNotification("Please enter a word!", "exclamation-circle", "red");
+    return;
+  }
+
+  // Hide previous result
+  wordResult.classList.add("hidden");
+  audioSrc = null;
+
+  try {
+    const res = await fetch(
+      `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
+    );
+    if (!res.ok) throw new Error("Word not found or API unavailable");
+
+    const data = await res.json();
+    const wordData = data[0];
+
+    // Word title
+    wordTitle.textContent = wordData.word || word;
+
+    // Phonetic
+    wordPhonetic.textContent = wordData.phonetic || "No phonetic available.";
+
+    // Definition
+    const firstMeaning = wordData.meanings?.[0];
+    const firstDefinition = firstMeaning?.definitions?.[0];
+    wordDefinition.textContent =
+      firstDefinition?.definition || "No definition available.";
+
+    // Example
+    wordExample.textContent =
+      firstDefinition?.example || "No example available.";
+
+    // Synonyms
+    if (firstDefinition?.synonyms && firstDefinition.synonyms.length > 0) {
+      wordSynonyms.innerHTML = firstDefinition.synonyms
+        .map((s) => `<span>${s}</span>`)
+        .join(", ");
+    } else {
+      wordSynonyms.innerHTML = "No synonyms available.";
+    }
+
+    // Audio
+    audioSrc = wordData.phonetics?.find((p) => p.audio)?.audio || null;
+
+    // Show result
     wordResult.classList.remove("hidden");
 
+    // Scroll on mobile
     if (window.innerWidth <= 480) {
       wordResult.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-  } else {
-    showNotification("Word not found!", "exclamation-circle", "red");
-    wordResult.classList.add("hidden");
+  } catch (err) {
+    console.error(err);
+    showNotification(
+      "Failed to fetch word. Please check your internet or try later.",
+      "exclamation-circle",
+      "red"
+    );
   }
 }
 
+// Play pronunciation audio
+function playPronunciation() {
+  if (audioSrc) {
+    const audio = new Audio(audioSrc);
+    audio.play();
+  } else {
+    showNotification("Audio not available for this word.", "volume-up", "blue");
+  }
+}
+
+// Search word programmatically
 function searchSpecificWord(word) {
-  document.getElementById("dictionary-input").value = word;
+  dictInput.value = word;
   searchWord();
 }
 
-function playPronunciation(word) {
-  if (word) {
-    const utterance = new SpeechSynthesisUtterance(word);
-    utterance.rate = window.innerWidth <= 480 ? 0.9 : 1.0;
-    speechSynthesis.speak(utterance);
-  } else {
-    showNotification("Please enter a word first!", "volume-up", "blue");
-  }
-}
-
-/// ---------------- QUIZ SYSTEM ----------------
-
+/* ---------------- QUIZ SYSTEM ---------------- */
 const quizData = {
   grammar: [
     {
@@ -258,12 +250,12 @@ const quizData = {
   ],
 };
 
-let currentQuiz = null;
-let currentQuestionIndex = 0;
-let correctAnswers = 0;
-let selectedAnswers = {};
-let timerInterval;
-let quizStartTime;
+let currentQuiz = null,
+  currentQuestionIndex = 0,
+  correctAnswers = 0,
+  selectedAnswers = {},
+  timerInterval,
+  quizStartTime;
 
 function startQuiz(type) {
   currentQuiz = quizData[type];
@@ -285,34 +277,28 @@ function startQuiz(type) {
 }
 
 function showQuestion() {
-  const question = currentQuiz[currentQuestionIndex];
+  const q = currentQuiz[currentQuestionIndex];
   document.getElementById("current-question").textContent =
     currentQuestionIndex + 1;
-  document.getElementById("question-text").textContent = question.question;
+  document.getElementById("question-text").textContent = q.question;
 
   const optionsContainer = document.getElementById("quiz-options");
-  optionsContainer.innerHTML = question.options
+  optionsContainer.innerHTML = q.options
     .map(
-      (option, index) => `
-        <label>
-          <input type="radio" name="answer" value="${index}" 
-          ${selectedAnswers[currentQuestionIndex] === index ? "checked" : ""}/>
-          ${option}
-        </label>`
+      (o, i) =>
+        `<label><input type="radio" name="answer" value="${i}" ${
+          selectedAnswers[currentQuestionIndex] === i ? "checked" : ""
+        }/> ${o}</label>`
     )
     .join("");
 
-  // Disable Previous button only on the first question
   document.getElementById("prev-btn").disabled = currentQuestionIndex === 0;
-
-  // Always enable Next button (validation happens in nextQuestion)
   document.getElementById("next-btn").disabled = false;
 
-  if (window.innerWidth <= 480) {
+  if (window.innerWidth <= 480)
     document
       .getElementById("quiz-questions")
       .scrollIntoView({ behavior: "smooth" });
-  }
 }
 
 function previousQuestion() {
@@ -322,7 +308,6 @@ function previousQuestion() {
     showQuestion();
   }
 }
-
 function nextQuestion() {
   saveAnswer();
   if (selectedAnswers[currentQuestionIndex] !== undefined) {
@@ -333,198 +318,98 @@ function nextQuestion() {
       clearInterval(timerInterval);
       calculateResults();
     }
-  } else {
+  } else
     showNotification("Please select an answer!", "exclamation-circle", "red");
-  }
 }
-
 function saveAnswer() {
-  const selectedOption = document.querySelector('input[name="answer"]:checked');
-  if (selectedOption) {
-    selectedAnswers[currentQuestionIndex] = parseInt(selectedOption.value);
-  }
+  const sel = document.querySelector('input[name="answer"]:checked');
+  if (sel) selectedAnswers[currentQuestionIndex] = parseInt(sel.value);
 }
-
 function startTimer(seconds) {
   let timeLeft = seconds;
-  const timerElement = document.getElementById("quiz-timer");
+  const tEl = document.getElementById("quiz-timer");
   clearInterval(timerInterval);
-
   timerInterval = setInterval(() => {
-    const minutes = Math.floor(timeLeft / 60);
-    const secs = timeLeft % 60;
-    timerElement.textContent = `${minutes.toString().padStart(2, "0")}:${secs
+    const m = Math.floor(timeLeft / 60),
+      s = timeLeft % 60;
+    tEl.textContent = `${m.toString().padStart(2, "0")}:${s
       .toString()
       .padStart(2, "0")}`;
     timeLeft--;
-
     if (timeLeft < 0) {
       clearInterval(timerInterval);
       calculateResults();
     }
   }, 1000);
 }
-
 function calculateResults() {
   correctAnswers = 0;
-  currentQuiz.forEach((q, index) => {
-    if (selectedAnswers[index] === q.correct) correctAnswers++;
+  currentQuiz.forEach((q, i) => {
+    if (selectedAnswers[i] === q.correct) correctAnswers++;
   });
   showResults();
 }
-
 function showResults() {
   document.getElementById("quiz-questions").classList.add("hidden");
   document.getElementById("quiz-results").classList.remove("hidden");
-
   const score = Math.round((correctAnswers / currentQuiz.length) * 100);
   document.getElementById("final-score").textContent = `${score}%`;
   document.getElementById("correct-answers").textContent = correctAnswers;
   document.getElementById("incorrect-answers").textContent =
     currentQuiz.length - correctAnswers;
-
   const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
-  const minutes = Math.floor(elapsed / 60);
-  const seconds = elapsed % 60;
+  const minutes = Math.floor(elapsed / 60),
+    seconds = elapsed % 60;
   document.getElementById("time-taken").textContent = `${minutes}:${seconds
     .toString()
     .padStart(2, "0")}`;
-
-  if (window.innerWidth <= 480) {
+  if (window.innerWidth <= 480)
     document
       .getElementById("quiz-results")
       .scrollIntoView({ behavior: "smooth" });
-  }
 }
-
 function restartQuiz() {
   document.getElementById("quiz-results").classList.add("hidden");
   document.getElementById("quiz-start").classList.remove("hidden");
 }
 
-/**
- * Selects a payment plan
- */
+/* ---------------- PAYMENT ---------------- */
 function selectPlan(plan) {
+  const price = plan === "basic" ? 19 : 39;
   document.getElementById("payment-form").classList.remove("hidden");
-  document.getElementById("selected-plan").textContent =
-    plan.charAt(0).toUpperCase() + plan.slice(1) + " Plan";
-
-  // ✅ Fix: Basic cheaper than Premium
-  const price = plan === "basic" ? 19.0 : 39.0;
+  document.getElementById("selected-plan").textContent = `${
+    plan.charAt(0).toUpperCase() + plan.slice(1)
+  } Plan`;
   document.getElementById("plan-price").textContent = `$${price.toFixed(2)}`;
   document.getElementById("subtotal").textContent = `$${price.toFixed(2)}`;
-
   const tax = (price * 0.2).toFixed(2);
   document.getElementById("tax-amount").textContent = `$${tax}`;
-
   const total = (price + parseFloat(tax)).toFixed(2);
   document.getElementById("total-price").textContent = `$${total}`;
-
-  if (window.innerWidth <= 480) {
+  if (window.innerWidth <= 480)
     document
       .getElementById("payment-form")
       .scrollIntoView({ behavior: "smooth" });
-  }
 }
-
-function processPayment(event) {
-  event.preventDefault();
+function processPayment(e) {
+  e.preventDefault();
   showNotification("Payment successful!", "check-circle", "green");
-  setTimeout(() => {
-    document.getElementById("payment-form").classList.add("hidden");
-  }, 2500);
+  setTimeout(
+    () => document.getElementById("payment-form").classList.add("hidden"),
+    2500
+  );
 }
 
-function init() {
-  countUp();
-  document.getElementById("hero").classList.remove("hidden");
-
-  // Add touch event listeners for mobile
-  if (window.innerWidth <= 480) {
-    document.querySelectorAll("nav p, nav i, nav button").forEach((el) => {
-      el.addEventListener("touchstart", () => el.classList.add("active"));
-      el.addEventListener("touchend", () => el.classList.remove("active"));
-    });
-  }
-
-  // ✅ Fix: replace all spaces in nav text
-  document.querySelectorAll("nav p").forEach((link) => {
-    link.addEventListener("click", () => {
-      const sectionId = link.textContent.toLowerCase().replace(/\s+/g, "-");
-      showSection(sectionId);
-    });
-  });
-
-  document
-    .getElementById("dictionary-input")
-    ?.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") searchWord();
-    });
-}
-
-window.addEventListener("load", init);
-
-const menuToggle = document.querySelector("#menuToggle");
-const navMenu = document.querySelector("#menu");
-const overlay = document.querySelector("#overlay");
-const icon = menuToggle.querySelector("i");
-
-// Toggle menu
-menuToggle.addEventListener("click", (e) => {
-  e.stopPropagation();
-  navMenu.classList.toggle("active");
-  overlay.classList.toggle("active");
-
-  if (icon.classList.contains("fa-bars")) {
-    icon.classList.remove("fa-bars");
-    icon.classList.add("fa-times");
-  } else {
-    icon.classList.remove("fa-times");
-    icon.classList.add("fa-bars");
-  }
-});
-
-// Close menu when overlay is clicked
-overlay.addEventListener("click", () => {
-  navMenu.classList.remove("active");
-  overlay.classList.remove("active");
-  icon.classList.remove("fa-times");
-  icon.classList.add("fa-bars");
-});
-
-// Close menu when clicking outside
-document.addEventListener("click", (e) => {
-  if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
-    navMenu.classList.remove("active");
-    overlay.classList.remove("active");
-    icon.classList.remove("fa-times");
-    icon.classList.add("fa-bars");
-  }
-});
-
-// Close menu when a menu item is clicked
-document.querySelectorAll(".menu-item").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    navMenu.classList.remove("active");
-    overlay.classList.remove("active");
-    icon.classList.remove("fa-times");
-    icon.classList.add("fa-bars");
-  });
-});
-///////////////////////////////////////
+/* ---------------- SLIDER ---------------- */
 const slider = function () {
-  const slides = document.querySelectorAll(".slide");
-  const btnLeft = document.querySelector(".slider__btn--left");
-  const btnRight = document.querySelector(".slider__btn--right");
-  const dotContainer = document.querySelector(".dots");
-
-  let curSlide = 0;
-  const maxSlide = slides.length;
-  let slideInterval;
-
-  // Create dots
-  const createDots = function () {
+  const slides = document.querySelectorAll(".slide"),
+    btnLeft = document.querySelector(".slider__btn--left"),
+    btnRight = document.querySelector(".slider__btn--right"),
+    dotContainer = document.querySelector(".dots");
+  let curSlide = 0,
+    maxSlide = slides.length,
+    slideInterval;
+  const createDots = () => {
     slides.forEach((_, i) => {
       dotContainer.insertAdjacentHTML(
         "beforeend",
@@ -532,46 +417,33 @@ const slider = function () {
       );
     });
   };
-
-  const activateDot = function (slide) {
+  const activateDot = (s) => {
     document
       .querySelectorAll(".dots__dot")
       .forEach((dot) => dot.classList.remove("dots__dot--active"));
     document
-      .querySelector(`.dots__dot[data-slide="${slide}"]`)
+      .querySelector(`.dots__dot[data-slide="${s}"]`)
       .classList.add("dots__dot--active");
   };
-
-  const goToSlide = function (slide) {
-    slides.forEach((s, i) => {
-      s.style.transform = `translateX(${100 * (i - slide)}%)`;
-    });
-  };
-
-  // Next / Previous
-  const nextSlide = function () {
+  const goToSlide = (s) =>
+    slides.forEach(
+      (sl, i) => (sl.style.transform = `translateX(${100 * (i - s)}%)`)
+    );
+  const nextSlide = () => {
     curSlide = curSlide === maxSlide - 1 ? 0 : curSlide + 1;
     goToSlide(curSlide);
     activateDot(curSlide);
   };
-
-  const prevSlide = function () {
+  const prevSlide = () => {
     curSlide = curSlide === 0 ? maxSlide - 1 : curSlide - 1;
     goToSlide(curSlide);
     activateDot(curSlide);
   };
-
-  // Auto slide timer
-  const startAutoSlide = function () {
-    slideInterval = setInterval(nextSlide, 4000); // 4 seconds
-  };
-
-  const resetAutoSlide = function () {
+  const startAutoSlide = () => (slideInterval = setInterval(nextSlide, 4000));
+  const resetAutoSlide = () => {
     clearInterval(slideInterval);
     startAutoSlide();
   };
-
-  // Init
   const init = function () {
     goToSlide(0);
     createDots();
@@ -579,8 +451,6 @@ const slider = function () {
     startAutoSlide();
   };
   init();
-
-  // Event handlers
   btnRight.addEventListener("click", () => {
     nextSlide();
     resetAutoSlide();
@@ -589,8 +459,7 @@ const slider = function () {
     prevSlide();
     resetAutoSlide();
   });
-
-  document.addEventListener("keydown", function (e) {
+  document.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft") {
       prevSlide();
       resetAutoSlide();
@@ -600,8 +469,7 @@ const slider = function () {
       resetAutoSlide();
     }
   });
-
-  dotContainer.addEventListener("click", function (e) {
+  dotContainer.addEventListener("click", (e) => {
     if (e.target.classList.contains("dots__dot")) {
       curSlide = Number(e.target.dataset.slide);
       goToSlide(curSlide);
@@ -610,39 +478,92 @@ const slider = function () {
     }
   });
 };
-
 slider();
+
+/* ---------------- MODALS ---------------- */
 function openModal(modalId) {
-  const modal = document.getElementById(modalId);
-  const overlay = document.querySelector(".overlay");
+  const modal = document.getElementById(modalId),
+    overlay = document.querySelector(".overlay");
   modal.classList.add("active");
   overlay.classList.add("active");
 }
-
 function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  const overlay = document.querySelector(".overlay");
+  const modal = document.getElementById(modalId),
+    overlay = document.querySelector(".overlay");
   modal.classList.remove("active");
   overlay.classList.remove("active");
 }
-
-// Close modal by clicking overlay
-document.querySelector(".overlay").addEventListener("click", () => {
+document.querySelector(".overlay")?.addEventListener("click", () => {
   document
     .querySelectorAll(".modal")
-    .forEach((modal) => modal.classList.remove("active"));
+    .forEach((m) => m.classList.remove("active"));
   document.querySelector(".overlay").classList.remove("active");
 });
-window.addEventListener("scroll", function () {
-  const scrollBtn = document.getElementById("scrollToTop");
-  if (window.scrollY > 200) {
-    scrollBtn.classList.add("show");
-  } else {
-    scrollBtn.classList.remove("show");
-  }
-});
 
-// Smooth scroll
-document.getElementById("scrollToTop").addEventListener("click", function () {
+/* ---------------- SCROLL TO TOP ---------------- */
+const scrollBtn = document.getElementById("scrollToTop");
+window.addEventListener("scroll", () => {
+  scrollBtn?.classList.toggle("show", window.scrollY > 200);
+});
+scrollBtn?.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
+
+/* ---------------- MENU TOGGLE ---------------- */
+const menuToggle = document.querySelector("#menuToggle"),
+  navMenu = document.querySelector("#menu"),
+  overlay = document.querySelector("#overlay"),
+  icon = menuToggle.querySelector("i");
+menuToggle.addEventListener("click", (e) => {
+  e.stopPropagation();
+  navMenu.classList.toggle("active");
+  overlay.classList.toggle("active");
+  icon.classList.toggle("fa-bars");
+  icon.classList.toggle("fa-times");
+});
+overlay.addEventListener("click", () => {
+  navMenu.classList.remove("active");
+  overlay.classList.remove("active");
+  icon.classList.remove("fa-times");
+  icon.classList.add("fa-bars");
+});
+document.addEventListener("click", (e) => {
+  if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+    navMenu.classList.remove("active");
+    overlay.classList.remove("active");
+    icon.classList.remove("fa-times");
+    icon.classList.add("fa-bars");
+  }
+});
+document.querySelectorAll(".menu-item").forEach((btn) =>
+  btn.addEventListener("click", () => {
+    navMenu.classList.remove("active");
+    overlay.classList.remove("active");
+    icon.classList.remove("fa-times");
+    icon.classList.add("fa-bars");
+  })
+);
+
+/* ---------------- INIT ---------------- */
+function init() {
+  countUp();
+  document.getElementById("hero").classList.remove("hidden");
+
+  if (window.innerWidth <= 480) {
+    document.querySelectorAll("nav p, nav i, nav button").forEach((el) => {
+      el.addEventListener("touchstart", () => el.classList.add("active"));
+      el.addEventListener("touchend", () => el.classList.remove("active"));
+    });
+  }
+
+  document.querySelectorAll("nav p").forEach((link) => {
+    link.addEventListener("click", () => {
+      showSection(link.textContent.toLowerCase().replace(/\s+/g, "-"));
+    });
+  });
+
+  dictInput?.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") searchWord();
+  });
+}
+window.addEventListener("load", init);
