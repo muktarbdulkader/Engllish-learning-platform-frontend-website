@@ -107,102 +107,81 @@ function countUp() {
   });
 }
 
-const dictInput = document.getElementById("dictionary-input");
-const wordResult = document.getElementById("word-result");
-const wordTitle = document.getElementById("word-title");
-const wordPhonetic = document.getElementById("word-phonetic");
-const wordDefinition = document.getElementById("word-definition");
-const wordExample = document.getElementById("word-example");
-const wordSynonyms = document.getElementById("word-synonyms");
-
 let audioSrc = null;
 
-// Trigger search on Enter key
-dictInput.addEventListener("keypress", function (e) {
-  if (e.key === "Enter") {
-    searchWord();
-  }
-});
+function searchWord() {
+  const word = document.getElementById("dictionary-input").value.trim();
+  const wordResult = document.getElementById("word-result");
+  const wordTitle = document.getElementById("word-title");
+  const wordPhonetic = document.getElementById("word-phonetic");
+  const wordDefinition = document.getElementById("word-definition");
+  const wordExample = document.getElementById("word-example");
+  const wordSynonyms = document.getElementById("word-synonyms");
 
-async function searchWord() {
-  const word = dictInput.value.trim();
-  if (!word) {
-    showNotification("Please enter a word!", "exclamation-circle", "red");
-    return;
-  }
+  if (!word) return alert("Please enter a word!");
 
-  // Hide previous result
-  wordResult.classList.add("hidden");
-  audioSrc = null;
+  // CORS proxy URL
+  const proxyUrl = "https://api.allorigins.win/get?url=";
+  const apiUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
 
-  try {
-    const res = await fetch(
-      `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
-    );
-    if (!res.ok) throw new Error("Word not found or API unavailable");
+  fetch(proxyUrl + encodeURIComponent(apiUrl))
+    .then((res) => res.json())
+    .then((data) => {
+      const wordData = JSON.parse(data.contents)[0];
 
-    const data = await res.json();
-    const wordData = data[0];
+      if (!wordData) {
+        wordResult.classList.add("hidden");
+        alert("Word not found. Try another.");
+        return;
+      }
 
-    // Word title
-    wordTitle.textContent = wordData.word || word;
+      // Word title
+      wordTitle.textContent = wordData.word;
 
-    // Phonetic
-    wordPhonetic.textContent = wordData.phonetic || "No phonetic available.";
+      // Phonetic
+      wordPhonetic.textContent = wordData.phonetic || "";
 
-    // Definition
-    const firstMeaning = wordData.meanings?.[0];
-    const firstDefinition = firstMeaning?.definitions?.[0];
-    wordDefinition.textContent =
-      firstDefinition?.definition || "No definition available.";
+      // Definition
+      const firstMeaning = wordData.meanings[0];
+      wordDefinition.textContent = firstMeaning.definitions[0].definition || "";
 
-    // Example
-    wordExample.textContent =
-      firstDefinition?.example || "No example available.";
+      // Example
+      wordExample.textContent =
+        firstMeaning.definitions[0].example || "No example available.";
 
-    // Synonyms
-    if (firstDefinition?.synonyms && firstDefinition.synonyms.length > 0) {
-      wordSynonyms.innerHTML = firstDefinition.synonyms
-        .map((s) => `<span>${s}</span>`)
-        .join(", ");
-    } else {
-      wordSynonyms.innerHTML = "No synonyms available.";
-    }
+      // Synonyms
+      wordSynonyms.innerHTML = firstMeaning.definitions[0].synonyms
+        ? firstMeaning.definitions[0].synonyms
+            .map((s) => `<span>${s}</span>`)
+            .join(", ")
+        : "No synonyms available.";
 
-    // Audio
-    audioSrc = wordData.phonetics?.find((p) => p.audio)?.audio || null;
+      // Pronunciation audio
+      audioSrc = wordData.phonetics.find((p) => p.audio)?.audio || null;
 
-    // Show result
-    wordResult.classList.remove("hidden");
+      // Show result section
+      wordResult.classList.remove("hidden");
 
-    // Scroll on mobile
-    if (window.innerWidth <= 480) {
-      wordResult.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  } catch (err) {
-    console.error(err);
-    showNotification(
-      "Failed to fetch word. Please check your internet or try later.",
-      "exclamation-circle",
-      "red"
-    );
-  }
+      // Scroll into view on mobile
+      if (window.innerWidth <= 480) {
+        wordResult.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      wordResult.classList.add("hidden");
+      alert("Error fetching word data. Try again later.");
+    });
 }
 
-// Play pronunciation audio
+// Play pronunciation
 function playPronunciation() {
   if (audioSrc) {
     const audio = new Audio(audioSrc);
     audio.play();
   } else {
-    showNotification("Audio not available for this word.", "volume-up", "blue");
+    alert("Audio not available for this word.");
   }
-}
-
-// Search word programmatically
-function searchSpecificWord(word) {
-  dictInput.value = word;
-  searchWord();
 }
 
 /* ---------------- QUIZ SYSTEM ---------------- */
