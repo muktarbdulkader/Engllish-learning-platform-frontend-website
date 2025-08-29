@@ -1,9 +1,10 @@
 /**
  * EnglishMaster Academy - Full JS
- * Handles navigation, sections, dashboard, registration, quiz, payment, slider, modals, scroll-to-top, dictionary
+ * Handles navigation, sections, dashboard, registration, quiz, payment, slider, modals, scroll-to-top, dictionary, chat
  */
 
 /* ---------------- SECTIONS ---------------- */
+
 const sections = [
   "hero",
   "features-overview",
@@ -28,6 +29,12 @@ function showSection(sectionId) {
   if (window.innerWidth <= 480) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
+}
+function showSection(...sectionIds) {
+  sections.forEach((id) => {
+    const section = document.getElementById(id);
+    if (section) section.classList.toggle("hidden", !sectionIds.includes(id));
+  });
 }
 
 /* ---------------- NAVIGATION & SCROLL ---------------- */
@@ -105,83 +112,6 @@ function countUp() {
     };
     updateCounter();
   });
-}
-
-let audioSrc = null;
-
-function searchWord() {
-  const word = document.getElementById("dictionary-input").value.trim();
-  const wordResult = document.getElementById("word-result");
-  const wordTitle = document.getElementById("word-title");
-  const wordPhonetic = document.getElementById("word-phonetic");
-  const wordDefinition = document.getElementById("word-definition");
-  const wordExample = document.getElementById("word-example");
-  const wordSynonyms = document.getElementById("word-synonyms");
-
-  if (!word) return alert("Please enter a word!");
-
-  // CORS proxy URL
-  const proxyUrl = "https://api.allorigins.win/get?url=";
-  const apiUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
-
-  fetch(proxyUrl + encodeURIComponent(apiUrl))
-    .then((res) => res.json())
-    .then((data) => {
-      const wordData = JSON.parse(data.contents)[0];
-
-      if (!wordData) {
-        wordResult.classList.add("hidden");
-        alert("Word not found. Try another.");
-        return;
-      }
-
-      // Word title
-      wordTitle.textContent = wordData.word;
-
-      // Phonetic
-      wordPhonetic.textContent = wordData.phonetic || "";
-
-      // Definition
-      const firstMeaning = wordData.meanings[0];
-      wordDefinition.textContent = firstMeaning.definitions[0].definition || "";
-
-      // Example
-      wordExample.textContent =
-        firstMeaning.definitions[0].example || "No example available.";
-
-      // Synonyms
-      wordSynonyms.innerHTML = firstMeaning.definitions[0].synonyms
-        ? firstMeaning.definitions[0].synonyms
-            .map((s) => `<span>${s}</span>`)
-            .join(", ")
-        : "No synonyms available.";
-
-      // Pronunciation audio
-      audioSrc = wordData.phonetics.find((p) => p.audio)?.audio || null;
-
-      // Show result section
-      wordResult.classList.remove("hidden");
-
-      // Scroll into view on mobile
-      if (window.innerWidth <= 480) {
-        wordResult.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      wordResult.classList.add("hidden");
-      alert("Error fetching word data. Try again later.");
-    });
-}
-
-// Play pronunciation
-function playPronunciation() {
-  if (audioSrc) {
-    const audio = new Audio(audioSrc);
-    audio.play();
-  } else {
-    alert("Audio not available for this word.");
-  }
 }
 
 /* ---------------- QUIZ SYSTEM ---------------- */
@@ -546,3 +476,169 @@ function init() {
   });
 }
 window.addEventListener("load", init);
+
+/* ---------------- DICTIONARY ---------------- */
+let audioSrc = null;
+const dictInput = document.getElementById("dictionary-input");
+
+function searchWord() {
+  const word = dictInput.value.trim();
+  const wordResult = document.getElementById("word-result");
+  const wordTitle = document.getElementById("word-title");
+  const wordPhonetic = document.getElementById("word-phonetic");
+  const wordDefinition = document.getElementById("word-definition");
+  const wordExample = document.getElementById("word-example");
+  const wordSynonyms = document.getElementById("word-synonyms");
+
+  if (!word) return alert("Please enter a word!");
+
+  const proxyUrl = "https://api.allorigins.win/get?url=";
+  const apiUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
+
+  fetch(proxyUrl + encodeURIComponent(apiUrl))
+    .then((res) => res.json())
+    .then((data) => {
+      const wordData = JSON.parse(data.contents)[0];
+      if (!wordData) {
+        wordResult.classList.add("hidden");
+        alert("Word not found. Try another.");
+        return;
+      }
+
+      wordTitle.textContent = wordData.word;
+      wordPhonetic.textContent = wordData.phonetic || "";
+      const firstMeaning = wordData.meanings[0];
+      wordDefinition.textContent = firstMeaning.definitions[0].definition || "";
+      wordExample.textContent =
+        firstMeaning.definitions[0].example || "No example available.";
+      wordSynonyms.innerHTML = firstMeaning.definitions[0].synonyms
+        ? firstMeaning.definitions[0].synonyms
+            .map((s) => `<span>${s}</span>`)
+            .join(", ")
+        : "No synonyms available.";
+      audioSrc = wordData.phonetics.find((p) => p.audio)?.audio || null;
+      wordResult.classList.remove("hidden");
+
+      if (window.innerWidth <= 480) {
+        wordResult.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      wordResult.classList.add("hidden");
+      alert("Error fetching word data. Try again later.");
+    });
+}
+
+function playPronunciation() {
+  if (audioSrc) {
+    const audio = new Audio(audioSrc);
+    audio.play();
+  } else {
+    alert("Audio not available for this word.");
+  }
+}
+
+/* ---------------- CHAT WIDGET ---------------- */
+const chatBtn = document.getElementById("chat-btn");
+const chatPanel = document.getElementById("chat-panel");
+const chatClose = document.getElementById("chat-close");
+const chatMessages = document.getElementById("chat-messages");
+const chatInput = document.getElementById("chat-input");
+const chatSend = document.getElementById("chat-send");
+
+chatBtn.addEventListener("click", () => {
+  chatPanel.classList.toggle("hidden");
+  chatPanel.classList.add("show");
+
+  if (!chatPanel.dataset.opened) {
+    appendMessage(
+      "Bot",
+      "👋 Hi! I can help you with academic questions or dictionary lookups."
+    );
+    chatPanel.dataset.opened = "true";
+  }
+});
+
+chatClose.addEventListener("click", () => chatPanel.classList.add("hidden"));
+
+function appendMessage(sender, text) {
+  const msg = document.createElement("div");
+  msg.innerHTML = `<strong>${sender}:</strong> ${text}`;
+  chatMessages.appendChild(msg);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function handleAcademicQuestion(question) {
+  const q = question.toLowerCase();
+  const topics = {
+    history: "📜 History studies past events and their impact.",
+    work: "💼 Work is activity done to achieve tasks or earn a living.",
+    rule: "⚖️ Rules/laws define what is allowed or prohibited.",
+    science: "🔬 Science studies the natural world using experiments.",
+    computer:
+      "💻 Computer Science is about algorithms, programming, and problem-solving.",
+    math: "📐 Mathematics studies numbers, patterns, and logic.",
+    geography:
+      "🌍 Geography studies places, environments, and human interaction.",
+    can: "this academic question is too broad and I can't provide a specific answer.",
+    what: "this academic question is too broad and I can't provide a specific answer.",
+    help: ' "🤖 I can assist with academic questions or dictionary lookups.",',
+    how: "hey there! how can I assist you today?",
+    i: "I'm here to help you with academic questions or dictionary lookups.",
+    hello: " 🤖 hell what can i help you with?",
+    hey: " 🤖 hey 👍 what can help today?,",
+    hi: ' "🤖 I can assist with academic questions or dictionary lookups.",',
+    good: ' "🤖 I can assist with academic questions or dictionary lookups.",',
+    morning:
+      ' "🤖 I can assist with academic questions or dictionary lookups.",',
+    afternoon:
+      ' "🤖 I can assist with academic questions or dictionary lookups.",',
+    evening:
+      ' "🤖 I can assist with academic questions or dictionary lookups.",',
+    night:
+      "have a great night! if you have any academic questions or need dictionary help, just ask!",
+  };
+  const topic = Object.keys(topics).find((t) => q.includes(t));
+  appendMessage(
+    "Bot",
+    topic
+      ? topics[topic]
+      : "🤔 I can try to answer your academic question or look up a word in the dictionary."
+  );
+}
+
+chatSend.addEventListener("click", () => {
+  const text = chatInput.value.trim();
+  if (!text) return;
+
+  appendMessage("You", text);
+  chatInput.value = "";
+
+  // Check if user wants dictionary search
+  if (text.toLowerCase().startsWith("define ")) {
+    const word = text.split(" ")[1];
+    dictInput.value = word;
+    searchWord();
+    appendMessage(
+      "Bot",
+      `🔍 Looking up the word "${word}" in the dictionary...`
+    );
+  } else {
+    handleAcademicQuestion(text);
+  }
+});
+
+chatInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") chatSend.click();
+});
+// Close the chat panel when the close button is clicked
+chatClose.addEventListener("click", () => {
+  chatPanel.classList.add("hidden");
+  chatPanel.classList.remove("show");
+});
+function searchSpecificWord(word) {
+  dictInput.value = word;
+  searchWord();
+  appendMessage("Bot", `🔍 Looking up the word "${word}" in the dictionary...`);
+}

@@ -39,6 +39,9 @@
 
       <!-- Navigation Menu -->
       <div id="menu">
+      <button class="menu-item" onclick="showSection('hero','features-overview','success-stories','about','slider')">
+          home
+        </button>
         <button class="menu-item" onclick="showSection('dashboard')">
           Dashboard
         </button>
@@ -1143,7 +1146,7 @@
             <button onclick="selectPlan('pro')">Choose Pro</button>
           </div>
         </div>
-        <!-- Payment Form -->
+       
         <!-- Payment Form -->
         <div id="payment-form" class="hidden">
           <h3>Complete Your Purchase</h3>
@@ -1253,6 +1256,11 @@
                 huge difference in my learning journey."
               </p>
             </div>
+             <i class="fas fa-star" id="fasr"></i>
+                  <i class="fas fa-star" id="fasr"> </i>
+                  <i class="fas fa-star" id="fasr"></i>
+                  <i class="fas fa-star" id="fasr"></i>
+                  <i class="fas fa-star" id="fasr"></i>
           </div>
 
           <!-- Story 2 -->
@@ -1265,6 +1273,11 @@
                 "EnglishMaster helped me improve my speaking confidence. Now I
                 can communicate easily at work and with international friends."
               </p>
+             <i class="fas fa-star" id="fasr"></i>
+                  <i class="fas fa-star" id="fasr"></i>
+                  <i class="fas fa-star" id="fasr"></i>
+                  <i class="fas fa-star" id="fasr"></i>
+                  <i class="fas fa-star" id="fasr"></i>
             </div>
           </div>
 
@@ -1278,7 +1291,11 @@
                 "The interactive lessons are fun and effective. I enjoy learning
                 every day, and my English has improved more than I expected!"
               </p>
-              <span class=""></span>
+            <i class="fas fa-star" id="fasr"></i>
+                  <i class="fas fa-star" id="fasr"></i>
+                  <i class="fas fa-star" id="fasr"></i>
+                  <i class="fas fa-star" id="fasr"></i>
+                  <i class="fas fa-star" id="fasr"></i>
             </div>
           </div>
         </div>
@@ -1412,7 +1429,30 @@
       </div>
     </div>
 
-    <!-- Footer -->
+
+<!-- AI Academic Assistant Widget -->
+<div id="chat-widget">
+  <button id="chat-btn" class="chat-btn">
+    <i class="fas fa-robot"></i>
+  </button>
+
+  <div id="chat-panel" class="hidden">
+    <div id="chat-header">
+      <span>Academic Assistant</span>
+      <button id="chat-close" title="Close">×</button>
+    </div>
+    <div id="chat-messages"></div>
+    <div id="chat-input-container">
+      <input type="text" id="chat-input" placeholder="Type your question..." />
+      <button id="chat-send">Send</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Footer -->
     <footer>
       <div>
         <div>
